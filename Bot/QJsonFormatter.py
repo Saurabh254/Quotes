@@ -10,5 +10,10 @@ class Quote:
     async with aiohttp.ClientSession() as session:
       response = await session.get(url)
       rawJson = await response.text()
-      jsonL = json.loads(rawJson)
-    return jsonL
+      self.jsonL = json.loads(rawJson)
+  def Text_Quotes(self):
+    Qtext = self.json.get("quoteText")
+    return Qtext
+  def author_ofQuote(self):
+    author = self.json.get("quoteAuthor")
+    return author
