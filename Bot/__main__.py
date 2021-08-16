@@ -17,26 +17,41 @@ async def on_ready():
   print("The bot is ready by user {}".format(client))
 @client.event
 async def on_message(message):
+  stop = True
+  
   if message.content.startswith("up!help"):
     help_text = worker._help()
     await message.channel.send(embed=help_text)
+    
   if message.content.startswith("up!ping"):
     latency = round(client.latency * 100)
     await message.channel.send(embed=worker.ping(latency))
+    
   if message.content.startswith("up!quote"):
     quote =  _Quotes_()
     jsonL = quote._response_()
     text_quote = quote.Json_quote(jsonL)
     author = quote.author_ofQuote(jsonL)
     await message.channel.send(embed=worker._quote_(text_quote, author))
-  if message.content.startswith("up!start"):
-    while True:
-      quote =  _Quotes_()
-      jsonL = quote._response_()
-      text_quote = quote.Json_quote(jsonL)
-      author = quote.author_ofQuote(jsonL)
-      time.sleep(10)
-      await message.channel.send(embed=worker.loop_quote_(text_quote, author))
-    
+  
+  if message.author.guild_permissions.administrator == True:
+    if message.content.startswith("up!stop"):
+      await message.channel.send(embed=worker.on_stop())
+      
+  if message.author.guild_permissions.administrator == True:
+    if message.content.startswith("up!start"):
+      while stop:
+        quote =  _Quotes_()
+        jsonL = quote._response_()
+        text_quote = quote.Json_quote(jsonL)
+        author = quote.author_ofQuote(jsonL)
+        time.sleep(1)
+        await message.channel.send(embed=worker.loop_quote_(text_quote, author))
+      
+  if message.content.startswith("up!developer"):
+    await message.channel.send(embed=worker.developer())
+  
+  if message.content.startswith("up!invite"):
+    await message.channel.send(embed=worker._invite_())
     
 client.run(token)
