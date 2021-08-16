@@ -2,7 +2,7 @@ import discord
 
 class Embeds:
   def ping(self,latency):
-    embedVar = discord.Embed(title="Pong!", description=f"💚 {latency}ms", color=0x00ff00)
+    embedVar = discord.Embed(title="Pong!", description=f"Latency: 💚 {latency}ms", color=0x00ff00)
     return embedVar
    
   def _help(self):
@@ -21,8 +21,11 @@ class Embeds:
     return embedVar
     
   def _quote_(self, text, author):
-    embedVar = discord.Embed(title="Daily Quotes", description=text, color=0x00ff00)
-    embedVar.set_footer(text=f"Quote by {0}".format(author))
-    embedVar.set_thumbnail(url="https://cdn.discordapp.com/emojis/876529388227813407.png?v=1&size=64")
+    embedVar = discord.Embed(title="Quote", description=text, color=0x000ff00)
+    embedVar.set_footer(text=f"Quote by {author}")
     return embedVar
-  
+    
+  def loop_quote_(self, text, author):
+    embedVar = discord.Embed(title="Daily Quote", description=text, color=0x000ff00)
+    embedVar.set_footer(text=f"Quote by {author}")
+    return embedVar
