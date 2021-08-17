@@ -1,4 +1,4 @@
-from discord.ext import commands
+from discord.ext import commands, tasks
 import discord
 import os 
 import time
@@ -10,48 +10,59 @@ import asyncio
 load_dotenv()
 token = os.getenv("TOKEN")
 
-client = discord.Client()
+bot = commands.Bot(command_prefix="up!")
 worker = Embeds()
-@client.event
+@bot.event
 async def on_ready():
-  print("The bot is ready by user {}".format(client))
-@client.event
-async def on_message(message):
-  stop = True
-  
-  if message.content.startswith("up!help"):
-    help_text = worker._help()
-    await message.channel.send(embed=help_text)
-    
-  if message.content.startswith("up!ping"):
-    latency = round(client.latency * 100)
-    await message.channel.send(embed=worker.ping(latency))
-    
-  if message.content.startswith("up!quote"):
+  print("The bot is ready by user {}".format(bot))
+  activity = discord.Game(name="Quote", type=3)
+  await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="Quotes API"))
+
+
+
+@bot.command(name="start")
+async def start(ctx):
+  while True:
     quote =  _Quotes_()
     jsonL = quote._response_()
     text_quote = quote.Json_quote(jsonL)
     author = quote.author_ofQuote(jsonL)
-    await message.channel.send(embed=worker._quote_(text_quote, author))
-  
-  if message.author.guild_permissions.administrator == True:
-    if message.content.startswith("up!stop"):
-      await message.channel.send(embed=worker.on_stop())
-      
-  if message.author.guild_permissions.administrator == True:
-    if message.content.startswith("up!start"):
-      while stop:
-        quote =  _Quotes_()
-        jsonL = quote._response_()
-        text_quote = quote.Json_quote(jsonL)
-        author = quote.author_ofQuote(jsonL)
-        time.sleep(1)
-        await message.channel.send(embed=worker.loop_quote_(text_quote, author))
-      
-  if message.content.startswith("up!developer"):
-    await message.channel.send(embed=worker.developer())
-  
-  if message.content.startswith("up!invite"):
-    await message.channel.send(embed=worker._invite_())
+    print("tasks running")
+    await ctx.send(embed=worker.loop_quote_(text_quote, author))
+    await asyncio.sleep(86400)
+    print("waiting for 100second")
     
-client.run(token)
+@bot.command(name="stop")
+async def stop(ctx):
+  await ctx.send(embed=worker.on_stop())
+  
+@bot.command(name="developer")
+async def developer(ctx):
+  await ctx.send(embed=worker.developer())
+
+@bot.command(name="ping")
+async def ping(ctx):
+  latency = round(bot.latency * 1000)
+  await ctx.send(embed=worker.ping(latency))
+    
+@bot.command(name="invite")
+async def _invite(ctx):
+  await ctx.send(embed=worker._invite_())
+  
+bot.remove_command('help')
+@bot.command(name="help")
+async def Qhelp_(ctx):
+  await ctx.send(embed=worker._help())
+    
+@bot.command(name="quote")
+async def quote(ctx):
+    quote =  _Quotes_()
+    jsonL = quote._response_()
+    text_quote = quote.Json_quote(jsonL)
+    author = quote.author_ofQuote(jsonL)
+    await ctx.send(embed=worker._quote_(text_quote, author))
+  
+
+bot.run(token)
+
+

@@ -7,7 +7,7 @@ class Embeds:
    
   def _help(self):
     embedVar = discord.Embed(title="Quotes Bot Commands", description="Use prefix: up!", color=0x00ff00)
-    embedVar.add_field(name="start", value="[Owner only] Start Quotes bot on this particular channel", inline=False)
+    embedVar.add_field(name="start", value="[Owner only] Start sending Quotes on this particular channel at a interval of 24 hour", inline=False)
     embedVar.add_field(name="quote", value="Show a random Quote", inline=False)
     embedVar.add_field(name="ping", value="Show bot latency", inline=False)
     embedVar.add_field(name="developer", value="Show developer of this bot", inline=False)
