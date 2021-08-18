@@ -31,7 +31,7 @@ async def start(ctx,time, args):
     text_quote = quote.Json_quote(jsonL)
     author = quote.author_ofQuote(jsonL)
     print("tasks running successfully")
-    print("Now waiting for 100second")
+    print(f"Now waiting for {time}")
     channel = bot.get_channel(int(args))
     await channel.send(embed=worker.loop_quote_(text_quote, author))
   quoter_send.start()
@@ -39,24 +39,29 @@ async def start(ctx,time, args):
 @bot.command(name="stop")
 async def stop(ctx):
   quoter_send.cancel()
+  print("User used stop command")
   await ctx.send(embed=worker.on_stop())
     
 @bot.command(name="developer")
 async def developer(ctx):
+  print("user used developer commad")
   await ctx.send(embed=worker.developer())
 
 @bot.command(name="ping")
 async def ping(ctx):
+  print("User used ping command")
   latency = round(bot.latency * 1000)
   await ctx.send(embed=worker.ping(latency))
     
 @bot.command(name="invite")
 async def _invite(ctx):
+  print("user used invite command")
   await ctx.send(embed=worker._invite_())
   
 bot.remove_command('help')
 @bot.command(name="help")
 async def Qhelp_(ctx):
+  print("user used help command")
   await ctx.send(embed=worker._help())
     
 @bot.command(name="quote")
