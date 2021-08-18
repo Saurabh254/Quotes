@@ -7,11 +7,11 @@ class Embeds:
    
   def _help(self):
     embedVar = discord.Embed(title="Quotes Bot Commands", description="Use prefix: up!", color=0x00ff00)
-    embedVar.add_field(name="start", value="[Owner only] Start sending Quotes on this particular channel at a interval of 24 hour", inline=False)
+    embedVar.add_field(name="start", value="Start sending Quotes on a particular channel at a interval of 24 hour.\nCommand format:\n`up!start [time(seconds)] [channelid]`\nExample:\n`up!start 1000 875207122370048072`", inline=False)
     embedVar.add_field(name="quote", value="Show a random Quote", inline=False)
     embedVar.add_field(name="ping", value="Show bot latency", inline=False)
     embedVar.add_field(name="developer", value="Show developer of this bot", inline=False)
-    embedVar.add_field(name="stop", value="[Broken] [Owner only] Stop this bot from sending Quotes", inline=False)
+    embedVar.add_field(name="stop", value="Stop this bot from sending Quotes", inline=False)
     embedVar.set_thumbnail(url="https://cdn.discordapp.com/emojis/876529388227813407.png?v=1&size=64")
     embedVar.set_footer(text="Powered by Quotes API")
     return embedVar
@@ -35,8 +35,17 @@ class Embeds:
     embedVar = discord.Embed(title="Daily Quote", description=text, color=0x000ff00)
     embedVar.set_footer(text=f"Quote by {author}")
     return embedVar
-    
+
+  def loop_started(self):
+    embedVar = discord.Embed(title="Quotes Bot", description="Quote bot is successfully activated", color=0x000ff00)
+    embedVar.set_footer(text="Powered by Quotes API")
+    return embedVar
+
   def on_stop(self):
     embedVar = discord.Embed(title="Quote Bot", description="Service stopped", color=0x000ff00)
     embedVar.set_footer(text=f"Powered by Quotes API")
+    return embedVar
+  def Json_error(self):
+    embedVar = discord.Embed(title="Quote Bot", description="Webpage not responding, Try again", color=0x000ff00)
+    embedVar.set_footer(text=f"Powered by Quote API")
     return embedVar
