@@ -21,21 +21,26 @@ async def on_ready():
 
 
 @bot.command(name="start")
-async def start(ctx):
-  while True:
+async def start(ctx,time, args):
+  global quoter_send
+  await ctx.send(embed=worker.loop_started())
+  @tasks.loop(seconds=(int(time)))
+  async def quoter_send():
     quote =  _Quotes_()
     jsonL = quote._response_()
     text_quote = quote.Json_quote(jsonL)
     author = quote.author_ofQuote(jsonL)
-    print("tasks running")
-    await ctx.send(embed=worker.loop_quote_(text_quote, author))
-    await asyncio.sleep(86400)
-    print("waiting for 100second")
-    
+    print("tasks running successfully")
+    print("Now waiting for 100second")
+    channel = bot.get_channel(int(args))
+    await channel.send(embed=worker.loop_quote_(text_quote, author))
+  quoter_send.start()
+
 @bot.command(name="stop")
 async def stop(ctx):
+  quoter_send.cancel()
   await ctx.send(embed=worker.on_stop())
-  
+    
 @bot.command(name="developer")
 async def developer(ctx):
   await ctx.send(embed=worker.developer())
@@ -56,12 +61,16 @@ async def Qhelp_(ctx):
     
 @bot.command(name="quote")
 async def quote(ctx):
+  try:  
     quote =  _Quotes_()
     jsonL = quote._response_()
     text_quote = quote.Json_quote(jsonL)
     author = quote.author_ofQuote(jsonL)
     await ctx.send(embed=worker._quote_(text_quote, author))
-  
+    print("worked successfully")
+  except:
+    await ctx.send(embed=worker.Json_error())
+    print(f"Got an Json error")
 
 bot.run(token)
 
