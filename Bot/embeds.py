@@ -7,11 +7,12 @@ class Embeds:
    
   def _help(self):
     embedVar = discord.Embed(title="Quotes Bot Commands", description="Use prefix: up!", color=0x00ff00)
-    embedVar.add_field(name="start", value="Start sending Quotes on a particular channel at a interval of 24 hour.\nCommand format:\n`up!start [time(seconds)] [channelid]`\nExample:\n`up!start 1000 875207122370048072`", inline=False)
+    embedVar.add_field(name="start", value="Start sending Quotes on a particular channel at a specific time.\nCommand format:\n`up!start [time(seconds)] [channelid]`\nExample:\n`up!start 1000 875207122370048072`", inline=False)
     embedVar.add_field(name="quote", value="Show a random Quote", inline=False)
     embedVar.add_field(name="ping", value="Show bot latency", inline=False)
     embedVar.add_field(name="developer", value="Show developer of this bot", inline=False)
     embedVar.add_field(name="stop", value="Stop this bot from sending Quotes", inline=False)
+    embedVar.add_field(name="invite", value="Invite this bot to your server", inline=False)
     embedVar.set_thumbnail(url="https://cdn.discordapp.com/emojis/876529388227813407.png?v=1&size=64")
     embedVar.set_footer(text="Powered by Quotes API")
     return embedVar
