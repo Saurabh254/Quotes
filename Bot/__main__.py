@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from embeds import Embeds
 from QJsonFormatter import _Quotes_
 import asyncio
-
+#Token load
 load_dotenv()
 token = os.getenv("TOKEN")
 
